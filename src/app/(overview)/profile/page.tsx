@@ -4,6 +4,7 @@ import { getCookieFromHeader } from "@/lib/auth";
 import { headers } from "next/headers";
 import QUERIES from "@/lib/queries";
 import { redirect } from "next/navigation";
+import { VerificationOptions } from "@/components/VerificationOptions";
 
 export default async function ProfilePage() {
   const userType = getCookieFromHeader("user_type", headers().get("cookie"));
@@ -33,6 +34,14 @@ export default async function ProfilePage() {
       ) : (
         <LearnerProfile user={user} />
       )}
+
+      <div className="mt-8 mb-4">
+        <h1 className="text-2xl font-bold">Verify Your Identity</h1>
+        <p className="text-muted-foreground">
+          Choose a verification method to enhance your profile trustworthiness
+        </p>
+      </div>
+      <VerificationOptions />
     </div>
   );
 }
