@@ -4,15 +4,20 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WavesIcon } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { setCookie } from "@/lib/cookies";
 
 export default function LoginScreen() {
+  const router = useRouter();
+
   const handleInstructorJoin = () => {
-    console.log("Joining as instructor");
+    setCookie("user_type", "instructor", { days: 365 });
+    router.push("/onboarding/instructor");
   };
 
   const handleLearnerJoin = () => {
-    console.log("Joining as learner");
+    setCookie("user_type", "learner", { days: 365 });
+    router.push("/home");
   };
 
   return (
@@ -36,23 +41,19 @@ export default function LoginScreen() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-3 pt-2">
-              <Link href="/home">
-                <Button
-                  onClick={handleInstructorJoin}
-                  className="w-full h-12 text-base transition-colors"
-                >
-                  Join as Instructor
-                </Button>
-              </Link>
-              <Link href="/home">
-                <Button
-                  onClick={handleLearnerJoin}
-                  variant="secondary"
-                  className="w-full h-12 text-base"
-                >
-                  Join as Learner
-                </Button>
-              </Link>
+              <Button
+                onClick={handleInstructorJoin}
+                className="w-full h-12 text-base transition-colors"
+              >
+                Join as Instructor
+              </Button>
+              <Button
+                onClick={handleLearnerJoin}
+                variant="secondary"
+                className="w-full h-12 text-base"
+              >
+                Join as Learner
+              </Button>
             </div>
           </CardContent>
         </Card>
