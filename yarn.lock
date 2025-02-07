@@ -1865,6 +1865,11 @@ dom-helpers@^5.0.1:
     "@babel/runtime" "^7.8.7"
     csstype "^3.0.2"
 
+dotenv@^16.4.7:
+  version "16.4.7"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.7.tgz#0e20c5b82950140aa99be360a8a5f52335f53c26"
+  integrity sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==
+
 drizzle-kit@^0.30.4:
   version "0.30.4"
   resolved "https://registry.yarnpkg.com/drizzle-kit/-/drizzle-kit-0.30.4.tgz#49e65a9c3b8cf4f28bfdc536355ba14b67e3446f"
