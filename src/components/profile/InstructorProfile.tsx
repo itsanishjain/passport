@@ -26,12 +26,13 @@ import {
 } from "@/lib/types/profile-api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 type User = Queries["user"];
 
 export default function InstructorProfile({ user }: { user: User }) {
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const {
     register,
@@ -56,6 +57,7 @@ export default function InstructorProfile({ user }: { user: User }) {
   });
 
   const onSubmit = async (data: InstructorProfileType) => {
+    console.log(data);
     try {
       setIsLoading(true);
       const response = await fetch("/api/profile/instructor", {
