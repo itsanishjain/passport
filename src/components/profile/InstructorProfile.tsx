@@ -19,30 +19,40 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
+import { Queries } from "@/lib/queries";
 
-interface InstructorProfileData {
-  bio: string;
-  experienceYears: string;
-  hourlyRate: string;
-  licenseNumber: string;
-  vehicleType: string;
-  location: string;
-}
+type User = Queries["user"];
 
-export default function InstructorProfile() {
-  const [profileData, setProfileData] = useState<InstructorProfileData>({
-    bio: "",
-    experienceYears: "",
-    hourlyRate: "",
-    licenseNumber: "",
-    vehicleType: "",
-    location: "",
+export default function InstructorProfile({ user }: { user: User }) {
+  const [profileData, setProfileData] = useState({
+    bio: user?.instructorProfile?.bio || "",
+    experienceYears: user?.instructorProfile?.experience_years || "",
+    hourlyRate: user?.instructorProfile?.hourly_rate || "",
+    licenseNumber: user?.instructorProfile?.license_number || "",
+    vehicleType: user?.instructorProfile?.vehicle_type || "",
+    location: user?.instructorProfile?.location || "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement profile update logic
-    console.log("Profile data:", profileData);
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/profile/instructor", {
+        method: "POST",
+        body: JSON.stringify(profileData),
+      });
+      if (response.ok) {
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -143,8 +153,12 @@ export default function InstructorProfile() {
         </CardContent>
       </Card>
 
-      <Button type="submit" className="w-full">
-        Save Profile
+      <Button type="submit" className="w-full" disabled={isLoading}>
+        {isLoading
+          ? "Saving..."
+          : user?.instructorProfile
+          ? "Update Profile"
+          : "Save Profile"}
       </Button>
     </form>
   );
