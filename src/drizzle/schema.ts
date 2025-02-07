@@ -7,6 +7,9 @@ export const users = sqliteTable("users", {
   wallet_address: text("wallet_address").unique(),
   name: text("name"),
   role: text("role", { enum: ["instructor", "learner"] }).notNull(),
+  orb_verified: integer("orb_verified").default(0),
+  device_verified: integer("device_verified").default(0),
+  profile_url: text("profile_url"),
   created_at: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updated_at: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
