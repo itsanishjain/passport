@@ -5,7 +5,6 @@ import MiniKitProvider from "@/components/minikit-provider";
 import dynamic from "next/dynamic";
 import NextAuthProvider from "@/components/next-auth-provider";
 import { ThemeProvider } from "@/components/theme-provider";
-import { BottomNav } from "@/components/bottom-nav";
 
 export const metadata: Metadata = {
   title: "Passport - Driving Instructor App",
@@ -35,7 +34,6 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <MiniKitProvider>{children}</MiniKitProvider>
-              <BottomNav />
             </ThemeProvider>
           </ErudaProvider>
         </NextAuthProvider>
