@@ -1,0 +1,11 @@
+Typescript:
+    - Follow best practice
+    - use strong typing
+    - Avoid 'any' or 'unknown'
+
+UI:
+    - Use shadcnUI, tailwindsCss
+    - Never update component/ui dir
+
+DB:
+    - Use drizzle ORM
