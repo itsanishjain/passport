@@ -20,49 +20,69 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { Queries } from "@/lib/queries";
-import { InstructorProfileType } from "@/lib/types/profile-api";
+import {
+  InstructorProfileSchema,
+  InstructorProfileType,
+} from "@/lib/types/profile-api";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "@/hooks/use-toast";
 
 type User = Queries["user"];
 
 export default function InstructorProfile({ user }: { user: User }) {
-  const [profileData, setProfileData] = useState<InstructorProfileType>({
-    bio: user?.instructorProfile?.bio || "",
-    experienceYears: user?.instructorProfile?.experience_years || 0,
-    hourlyRate: user?.instructorProfile?.hourly_rate || 0,
-    licenseNumber: user?.instructorProfile?.license_number || "",
-    vehicleType:
-      (user?.instructorProfile?.vehicle_type as
-        | "manual"
-        | "automatic"
-        | "both") || "manual",
-    location: user?.instructorProfile?.location || "",
-  });
-
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<InstructorProfileType>({
+    resolver: zodResolver(InstructorProfileSchema),
+    defaultValues: {
+      bio: user?.instructorProfile?.bio || "",
+      experienceYears: user?.instructorProfile?.experience_years || 0,
+      hourlyRate: user?.instructorProfile?.hourly_rate || 0,
+      licenseNumber: user?.instructorProfile?.license_number || "",
+      vehicleType:
+        (user?.instructorProfile?.vehicle_type as
+          | "manual"
+          | "automatic"
+          | "both") || "manual",
+      location: user?.instructorProfile?.location || "",
+    },
+  });
+
+  const onSubmit = async (data: InstructorProfileType) => {
     try {
       setIsLoading(true);
       const response = await fetch("/api/profile/instructor", {
-        method: "POST",
-        body: JSON.stringify(profileData),
+        method: user?.instructorProfile ? "PUT" : "POST",
+        body: JSON.stringify(data),
       });
 
-      if (response.ok) {
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
+      if (!response.ok) {
+        throw new Error("Failed to save profile");
       }
+      toast({
+        title: "Profile saved successfully",
+        description: "Your profile has been updated",
+      });
     } catch (error) {
       console.error(error);
+      toast({
+        title: "Failed to save profile",
+        description: "Please try again",
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle>Instructor Profile</CardTitle>
@@ -76,11 +96,11 @@ export default function InstructorProfile({ user }: { user: User }) {
             <Textarea
               id="bio"
               placeholder="Tell students about yourself and your teaching style"
-              value={profileData.bio}
-              onChange={(e) =>
-                setProfileData({ ...profileData, bio: e.target.value })
-              }
+              {...register("bio")}
             />
+            {errors.bio && (
+              <p className="text-sm text-red-500">{errors.bio.message}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -89,14 +109,13 @@ export default function InstructorProfile({ user }: { user: User }) {
               <Input
                 id="experienceYears"
                 type="number"
-                value={profileData.experienceYears}
-                onChange={(e) =>
-                  setProfileData({
-                    ...profileData,
-                    experienceYears: parseInt(e.target.value),
-                  })
-                }
+                {...register("experienceYears", { valueAsNumber: true })}
               />
+              {errors.experienceYears && (
+                <p className="text-sm text-red-500">
+                  {errors.experienceYears.message}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -104,40 +123,35 @@ export default function InstructorProfile({ user }: { user: User }) {
               <Input
                 id="hourlyRate"
                 type="number"
-                value={profileData.hourlyRate}
-                onChange={(e) =>
-                  setProfileData({
-                    ...profileData,
-                    hourlyRate: parseInt(e.target.value),
-                  })
-                }
+                {...register("hourlyRate", { valueAsNumber: true })}
               />
+              {errors.hourlyRate && (
+                <p className="text-sm text-red-500">
+                  {errors.hourlyRate.message}
+                </p>
+              )}
             </div>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="licenseNumber">License Number</Label>
-            <Input
-              id="licenseNumber"
-              value={profileData.licenseNumber}
-              onChange={(e) =>
-                setProfileData({
-                  ...profileData,
-                  licenseNumber: e.target.value,
-                })
-              }
-            />
+            <Input id="licenseNumber" {...register("licenseNumber")} />
+            {errors.licenseNumber && (
+              <p className="text-sm text-red-500">
+                {errors.licenseNumber.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="vehicleType">Vehicle Type</Label>
             <Select
-              value={profileData.vehicleType}
+              value={watch("vehicleType")}
               onValueChange={(value) =>
-                setProfileData({
-                  ...profileData,
-                  vehicleType: value as "manual" | "automatic" | "both",
-                })
+                setValue(
+                  "vehicleType",
+                  value as "manual" | "automatic" | "both"
+                )
               }
             >
               <SelectTrigger>
@@ -150,6 +164,11 @@ export default function InstructorProfile({ user }: { user: User }) {
                 <SelectItem value="both">Both</SelectItem>
               </SelectContent>
             </Select>
+            {errors.vehicleType && (
+              <p className="text-sm text-red-500">
+                {errors.vehicleType.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -157,11 +176,11 @@ export default function InstructorProfile({ user }: { user: User }) {
             <Input
               id="location"
               placeholder="Enter your teaching area"
-              value={profileData.location}
-              onChange={(e) =>
-                setProfileData({ ...profileData, location: e.target.value })
-              }
+              {...register("location")}
             />
+            {errors.location && (
+              <p className="text-sm text-red-500">{errors.location.message}</p>
+            )}
           </div>
         </CardContent>
       </Card>

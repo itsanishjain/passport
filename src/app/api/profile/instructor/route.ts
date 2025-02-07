@@ -54,7 +54,11 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const walletAddress = getWalletAddress(request);
+    const walletAddress = getCookieFromHeader(
+      "wallet_address",
+      headers().get("cookie")
+    );
+
     if (!walletAddress) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -72,7 +76,14 @@ export async function PUT(request: NextRequest) {
 
     await db
       .update(instructorProfiles)
-      .set(body)
+      .set({
+        bio: body.bio,
+        experience_years: body.experienceYears,
+        hourly_rate: body.hourlyRate,
+        license_number: body.licenseNumber,
+        vehicle_type: body.vehicleType,
+        location: body.location,
+      })
       .where(eq(instructorProfiles.user_id, user.id));
 
     return NextResponse.json({ success: true });
