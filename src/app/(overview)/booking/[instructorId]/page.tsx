@@ -4,10 +4,17 @@ import { Calendar } from "@/components/ui/calendar";
 import { Clock } from "lucide-react";
 import Image from "next/image";
 
-export default function BookingPage() {
+export default function BookingPage({
+  params,
+}: {
+  params: { instructorId: string };
+}) {
+  const instructorId = params.instructorId;
+  console.log(instructorId);
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Instructor Summary */}
+
       <div className="bg-primary px-4 pt-6 pb-8">
         <div className="flex items-center gap-3">
           <div className="w-16 h-16 rounded-full overflow-hidden">

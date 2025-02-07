@@ -93,7 +93,9 @@ export default function SearchPage() {
                         View Profile
                       </Button>
                     </Link>
-                    <Button className="flex-1">Book Lesson</Button>
+                    <Link href={`/booking/${i}`} className="flex-1">
+                      <Button className="flex-1">Book Lesson</Button>
+                    </Link>
                   </div>
                 </div>
               </div>
