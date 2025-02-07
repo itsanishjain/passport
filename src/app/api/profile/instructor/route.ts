@@ -23,19 +23,16 @@ export async function POST(request: NextRequest) {
     const json = await request.json();
     const body = InstructorProfileSchema.parse(json);
 
-    const user = await db.query.users.findFirst({
-      where: eq(users.wallet_address, walletAddress),
-    });
-
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const profile = await db.insert(instructorProfiles).values({
-      id: user.id,
-      user_id: user.id,
+      id: userId,
+      user_id: userId,
       bio: body.bio,
       experience_years: body.experienceYears,
+
       hourly_rate: body.hourlyRate,
       license_number: body.licenseNumber,
       vehicle_type: body.vehicleType,
@@ -59,6 +56,8 @@ export async function PUT(request: NextRequest) {
       headers().get("cookie")
     );
 
+    const userId = getCookieFromHeader("user_id", headers().get("cookie"));
+
     if (!walletAddress) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -66,16 +65,13 @@ export async function PUT(request: NextRequest) {
     const json = await request.json();
     const body = InstructorProfileSchema.parse(json);
 
-    const user = await db.query.users.findFirst({
-      where: eq(users.wallet_address, walletAddress),
-    });
-
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await db
       .update(instructorProfiles)
+
       .set({
         bio: body.bio,
         experience_years: body.experienceYears,
@@ -84,7 +80,7 @@ export async function PUT(request: NextRequest) {
         vehicle_type: body.vehicleType,
         location: body.location,
       })
-      .where(eq(instructorProfiles.user_id, user.id));
+      .where(eq(instructorProfiles.user_id, userId));
 
     return NextResponse.json({ success: true });
   } catch (error) {

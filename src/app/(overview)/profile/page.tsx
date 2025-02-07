@@ -31,7 +31,7 @@ export default async function ProfilePage() {
       {userType === "instructor" ? (
         <InstructorProfile user={user} />
       ) : (
-        <LearnerProfile />
+        <LearnerProfile user={user} />
       )}
     </div>
   );

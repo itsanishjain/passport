@@ -19,32 +19,72 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
+import { Queries } from "@/lib/queries";
+import {
+  LearnerProfileSchema,
+  LearnerProfileType,
+} from "@/lib/types/profile-api";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useToast } from "@/hooks/use-toast";
 
-interface LearnerProfileData {
-  learningGoals: string;
-  preferredLocation: string;
-  preferredSchedule: string;
-  licenseType: string;
-  experienceLevel: string;
-}
+type User = Queries["user"];
 
-export default function LearnerProfile() {
-  const [profileData, setProfileData] = useState<LearnerProfileData>({
-    learningGoals: "",
-    preferredLocation: "",
-    preferredSchedule: "",
-    licenseType: "",
-    experienceLevel: "",
+export default function LearnerProfile({ user }: { user: User }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<LearnerProfileType>({
+    resolver: zodResolver(LearnerProfileSchema),
+    defaultValues: {
+      learningGoals: user?.learnerProfile?.learning_goals || "",
+      preferredLocation: user?.learnerProfile?.preferred_location || "",
+      preferredSchedule: user?.learnerProfile?.preferred_schedule || "",
+      licenseType:
+        (user?.learnerProfile?.license_type as "provisional" | "full") ||
+        "provisional",
+      experienceLevel:
+        (user?.learnerProfile?.experience_level as
+          | "beginner"
+          | "intermediate"
+          | "advanced") || "beginner",
+    },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement profile update logic
-    console.log("Profile data:", profileData);
+  const onSubmit = async (data: LearnerProfileType) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/profile/learner", {
+        method: user?.learnerProfile ? "PUT" : "POST",
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save profile");
+      }
+      toast({
+        title: "Profile saved successfully",
+        description: "Your profile has been updated",
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Failed to save profile",
+        description: "Please try again",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle>Learner Profile</CardTitle>
@@ -58,14 +98,13 @@ export default function LearnerProfile() {
             <Textarea
               id="learningGoals"
               placeholder="What do you want to achieve from your driving lessons?"
-              value={profileData.learningGoals}
-              onChange={(e) =>
-                setProfileData({
-                  ...profileData,
-                  learningGoals: e.target.value,
-                })
-              }
+              {...register("learningGoals")}
             />
+            {errors.learningGoals && (
+              <p className="text-sm text-red-500">
+                {errors.learningGoals.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -73,14 +112,13 @@ export default function LearnerProfile() {
             <Input
               id="preferredLocation"
               placeholder="Where would you like to take lessons?"
-              value={profileData.preferredLocation}
-              onChange={(e) =>
-                setProfileData({
-                  ...profileData,
-                  preferredLocation: e.target.value,
-                })
-              }
+              {...register("preferredLocation")}
             />
+            {errors.preferredLocation && (
+              <p className="text-sm text-red-500">
+                {errors.preferredLocation.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -88,22 +126,21 @@ export default function LearnerProfile() {
             <Input
               id="preferredSchedule"
               placeholder="e.g., Weekday evenings, Weekend mornings"
-              value={profileData.preferredSchedule}
-              onChange={(e) =>
-                setProfileData({
-                  ...profileData,
-                  preferredSchedule: e.target.value,
-                })
-              }
+              {...register("preferredSchedule")}
             />
+            {errors.preferredSchedule && (
+              <p className="text-sm text-red-500">
+                {errors.preferredSchedule.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="licenseType">License Type</Label>
             <Select
-              value={profileData.licenseType}
-              onValueChange={(value) =>
-                setProfileData({ ...profileData, licenseType: value })
+              value={watch("licenseType")}
+              onValueChange={(value: "provisional" | "full") =>
+                setValue("licenseType", value)
               }
             >
               <SelectTrigger>
@@ -114,15 +151,20 @@ export default function LearnerProfile() {
                 <SelectItem value="full">Full</SelectItem>
               </SelectContent>
             </Select>
+            {errors.licenseType && (
+              <p className="text-sm text-red-500">
+                {errors.licenseType.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="experienceLevel">Experience Level</Label>
             <Select
-              value={profileData.experienceLevel}
-              onValueChange={(value) =>
-                setProfileData({ ...profileData, experienceLevel: value })
-              }
+              value={watch("experienceLevel")}
+              onValueChange={(
+                value: "beginner" | "intermediate" | "advanced"
+              ) => setValue("experienceLevel", value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select your experience level" />
@@ -133,12 +175,17 @@ export default function LearnerProfile() {
                 <SelectItem value="advanced">Advanced</SelectItem>
               </SelectContent>
             </Select>
+            {errors.experienceLevel && (
+              <p className="text-sm text-red-500">
+                {errors.experienceLevel.message}
+              </p>
+            )}
           </div>
         </CardContent>
       </Card>
 
-      <Button type="submit" className="w-full">
-        Save Profile
+      <Button type="submit" className="w-full" disabled={isLoading}>
+        {isLoading ? "Saving..." : "Save Profile"}
       </Button>
     </form>
   );

@@ -21,4 +21,4 @@ export const LearnerProfileSchema = z.object({
   experienceLevel: z.enum(["beginner", "intermediate", "advanced"]),
 });
 
-export type LearnerProfile = z.infer<typeof LearnerProfileSchema>;
+export type LearnerProfileType = z.infer<typeof LearnerProfileSchema>;

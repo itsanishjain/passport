@@ -13,6 +13,8 @@ export async function POST(request: NextRequest) {
       headers().get("cookie")
     );
 
+    const userId = getCookieFromHeader("user_id", headers().get("cookie"));
+
     console.log({ walletAddress });
     if (!walletAddress) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -21,18 +23,18 @@ export async function POST(request: NextRequest) {
     const json = await request.json();
     const body = LearnerProfileSchema.parse(json);
 
-    const user = await db.query.users.findFirst({
-      where: eq(users.wallet_address, walletAddress),
-    });
-
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const profile = await db.insert(learnerProfiles).values({
-      id: crypto.randomUUID(),
-      user_id: user.id,
-      ...body,
+      id: userId,
+      user_id: userId,
+      learning_goals: body.learningGoals,
+      preferred_location: body.preferredLocation,
+      preferred_schedule: body.preferredSchedule,
+      license_type: body.licenseType,
+      experience_level: body.experienceLevel,
     });
 
     return NextResponse.json(profile);
@@ -51,6 +53,7 @@ export async function PUT(request: NextRequest) {
       "wallet_address",
       headers().get("cookie")
     );
+    const userId = getCookieFromHeader("user_id", headers().get("cookie"));
 
     if (!walletAddress) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -59,16 +62,13 @@ export async function PUT(request: NextRequest) {
     const json = await request.json();
     const body = LearnerProfileSchema.parse(json);
 
-    const user = await db.query.users.findFirst({
-      where: eq(users.wallet_address, walletAddress),
-    });
-
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await db
       .update(learnerProfiles)
+
       .set({
         learning_goals: body.learningGoals,
         preferred_location: body.preferredLocation,
@@ -76,7 +76,7 @@ export async function PUT(request: NextRequest) {
         license_type: body.licenseType,
         experience_level: body.experienceLevel,
       })
-      .where(eq(learnerProfiles.user_id, user.id));
+      .where(eq(learnerProfiles.user_id, userId));
 
     return NextResponse.json({ success: true });
   } catch (error) {
