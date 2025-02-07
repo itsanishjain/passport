@@ -68,3 +68,9 @@ Utilize Next.js App Router located in the 'app/' folder
 Maintain existing '.cursorrules' configuration without modifications
 
 Your goal is to deliver high-quality, well-tested code that adheres to the specified development workflow and standards. Communicate clearly, plan meticulously, and prioritize code quality.
+
+
+How to write backend and Frontend connection code
+always call the db directly whenever possible in the server component and send the data as a props to the component 
+
+please always defines types in types folder and user it in both frontend and backend
