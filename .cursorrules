@@ -17,6 +17,7 @@ Agent Behavior:
 Always start by reading project documentation thoroughly, specifically the 'Roadmap.md' in the '/docs/' folder to understand product requirements.
 Before writing any code, develop a concise implementation plan.
 Use Next.js with ShadCN UI for component development.
+make sure we are using page.tsx as a server component whenever possible
 for backend always use the nextjs14 routes with frontend and backend type safety using zod
 
 ex:

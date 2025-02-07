@@ -10,7 +10,7 @@ export function BottomNav() {
   const navigation = [
     { name: "Home", href: "/home", icon: Home },
     { name: "Search", href: "/search", icon: Search },
-    { name: "Bookings", href: "/bookings", icon: Calendar },
+    { name: "Dashboard", href: "/dashboard", icon: Calendar },
     { name: "Profile", href: "/profile", icon: User },
   ];
 
