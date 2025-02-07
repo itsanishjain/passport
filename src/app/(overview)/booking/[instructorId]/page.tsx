@@ -12,7 +12,7 @@ export default function BookingPage() {
         <div className="flex items-center gap-3">
           <div className="w-16 h-16 rounded-full overflow-hidden">
             <Image
-              src="/instructor-1.jpg"
+              src="/assets/avatar-placeholder-women.png"
               alt="Sarah Wilson"
               width={64}
               height={64}
