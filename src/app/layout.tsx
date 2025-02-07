@@ -9,7 +9,7 @@ import { BottomNav } from "@/components/bottom-nav";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "GoRide - Driving Instructor App",
+  title: "Passport - Driving Instructor App",
   description: "Connect with qualified driving instructors",
 };
 
