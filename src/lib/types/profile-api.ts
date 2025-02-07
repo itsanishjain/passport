@@ -10,7 +10,7 @@ export const InstructorProfileSchema = z.object({
   location: z.string().min(1, "Location is required"),
 });
 
-export type InstructorProfile = z.infer<typeof InstructorProfileSchema>;
+export type InstructorProfileType = z.infer<typeof InstructorProfileSchema>;
 
 // Learner profile schema
 export const LearnerProfileSchema = z.object({

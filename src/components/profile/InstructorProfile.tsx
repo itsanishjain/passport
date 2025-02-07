@@ -20,16 +20,21 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { Queries } from "@/lib/queries";
+import { InstructorProfileType } from "@/lib/types/profile-api";
 
 type User = Queries["user"];
 
 export default function InstructorProfile({ user }: { user: User }) {
-  const [profileData, setProfileData] = useState({
+  const [profileData, setProfileData] = useState<InstructorProfileType>({
     bio: user?.instructorProfile?.bio || "",
-    experienceYears: user?.instructorProfile?.experience_years || "",
-    hourlyRate: user?.instructorProfile?.hourly_rate || "",
+    experienceYears: user?.instructorProfile?.experience_years || 0,
+    hourlyRate: user?.instructorProfile?.hourly_rate || 0,
     licenseNumber: user?.instructorProfile?.license_number || "",
-    vehicleType: user?.instructorProfile?.vehicle_type || "",
+    vehicleType:
+      (user?.instructorProfile?.vehicle_type as
+        | "manual"
+        | "automatic"
+        | "both") || "manual",
     location: user?.instructorProfile?.location || "",
   });
 
@@ -43,6 +48,7 @@ export default function InstructorProfile({ user }: { user: User }) {
         method: "POST",
         body: JSON.stringify(profileData),
       });
+
       if (response.ok) {
         setIsLoading(false);
       } else {
@@ -87,7 +93,7 @@ export default function InstructorProfile({ user }: { user: User }) {
                 onChange={(e) =>
                   setProfileData({
                     ...profileData,
-                    experienceYears: e.target.value,
+                    experienceYears: parseInt(e.target.value),
                   })
                 }
               />
@@ -100,7 +106,10 @@ export default function InstructorProfile({ user }: { user: User }) {
                 type="number"
                 value={profileData.hourlyRate}
                 onChange={(e) =>
-                  setProfileData({ ...profileData, hourlyRate: e.target.value })
+                  setProfileData({
+                    ...profileData,
+                    hourlyRate: parseInt(e.target.value),
+                  })
                 }
               />
             </div>
@@ -125,12 +134,16 @@ export default function InstructorProfile({ user }: { user: User }) {
             <Select
               value={profileData.vehicleType}
               onValueChange={(value) =>
-                setProfileData({ ...profileData, vehicleType: value })
+                setProfileData({
+                  ...profileData,
+                  vehicleType: value as "manual" | "automatic" | "both",
+                })
               }
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select vehicle type" />
               </SelectTrigger>
+
               <SelectContent>
                 <SelectItem value="manual">Manual</SelectItem>
                 <SelectItem value="automatic">Automatic</SelectItem>

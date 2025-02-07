@@ -13,6 +13,8 @@ export async function POST(request: NextRequest) {
       headers().get("cookie")
     );
 
+    const userId = getCookieFromHeader("user_id", headers().get("cookie"));
+
     console.log({ walletAddress });
     if (!walletAddress) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -30,9 +32,14 @@ export async function POST(request: NextRequest) {
     }
 
     const profile = await db.insert(instructorProfiles).values({
-      id: crypto.randomUUID(),
+      id: user.id,
       user_id: user.id,
-      ...body,
+      bio: body.bio,
+      experience_years: body.experienceYears,
+      hourly_rate: body.hourlyRate,
+      license_number: body.licenseNumber,
+      vehicle_type: body.vehicleType,
+      location: body.location,
     });
 
     return NextResponse.json(profile);
