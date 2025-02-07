@@ -5,18 +5,28 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WavesIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { setCookie } from "@/lib/cookies";
+import { setCookie, getCookie } from "@/lib/cookies";
 
 export default function LoginScreen() {
   const router = useRouter();
 
   const handleInstructorJoin = () => {
     setCookie("user_type", "instructor", { days: 365 });
+    if (!getCookie("user_id"))
+      setCookie("user_id", crypto.randomUUID(), { days: 365 });
+    if (!getCookie("wallet_address"))
+      setCookie("wallet_address", crypto.randomUUID(), { days: 365 });
+
     router.push("/onboarding/instructor");
   };
 
   const handleLearnerJoin = () => {
     setCookie("user_type", "learner", { days: 365 });
+    if (!getCookie("user_id"))
+      setCookie("user_id", crypto.randomUUID(), { days: 365 });
+    if (!getCookie("wallet_address"))
+      setCookie("wallet_address", crypto.randomUUID(), { days: 365 });
+
     router.push("/home");
   };
 
