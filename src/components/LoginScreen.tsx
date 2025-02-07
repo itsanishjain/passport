@@ -6,28 +6,80 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WavesIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { setCookie, getCookie } from "@/lib/cookies";
+import { UserCreate } from "@/lib/types/user-api";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleInstructorJoin = () => {
-    setCookie("user_type", "instructor", { days: 365 });
-    if (!getCookie("user_id"))
-      setCookie("user_id", crypto.randomUUID(), { days: 365 });
-    if (!getCookie("wallet_address"))
-      setCookie("wallet_address", crypto.randomUUID(), { days: 365 });
+  const createUser = async (userType: "instructor" | "learner") => {
+    const userId = getCookie("user_id") || crypto.randomUUID();
+    const walletAddress = getCookie("wallet_address") || crypto.randomUUID();
 
-    router.push("/onboarding/instructor");
+    if (!getCookie("user_id") || !getCookie("wallet_address")) {
+      // Set cookies first
+      setCookie("user_id", userId, { days: 365 });
+      setCookie("wallet_address", walletAddress, { days: 365 });
+
+      try {
+        // Call API to create user
+        const userData: UserCreate = {
+          userId,
+          walletAddress,
+          userType,
+        };
+
+        setIsLoading(true);
+
+        const response = await fetch("/api/user", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to create user");
+        }
+      } catch (error) {
+        console.error("Error creating user:", error);
+        toast({
+          title: "Error",
+          description: "Failed to create user. Please try again.",
+          variant: "destructive",
+        });
+        return false;
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    return true;
   };
 
-  const handleLearnerJoin = () => {
-    setCookie("user_type", "learner", { days: 365 });
-    if (!getCookie("user_id"))
-      setCookie("user_id", crypto.randomUUID(), { days: 365 });
-    if (!getCookie("wallet_address"))
-      setCookie("wallet_address", crypto.randomUUID(), { days: 365 });
+  const handleInstructorJoin = async () => {
+    if (!getCookie("user_type")) {
+      setCookie("user_type", "instructor", { days: 365 });
+    }
 
-    router.push("/home");
+    const success = await createUser("instructor");
+    if (success) {
+      router.push("/onboarding/instructor");
+    }
+  };
+
+  const handleLearnerJoin = async () => {
+    if (!getCookie("user_type")) {
+      setCookie("user_type", "learner", { days: 365 });
+    }
+
+    const success = await createUser("learner");
+    if (success) {
+      router.push("/home");
+    }
   };
 
   return (
@@ -54,15 +106,17 @@ export default function LoginScreen() {
               <Button
                 onClick={handleInstructorJoin}
                 className="w-full h-12 text-base transition-colors"
+                disabled={isLoading}
               >
-                Join as Instructor
+                {isLoading ? "Joining..." : "Join as Instructor"}
               </Button>
               <Button
+                disabled={isLoading}
                 onClick={handleLearnerJoin}
                 variant="secondary"
                 className="w-full h-12 text-base"
               >
-                Join as Learner
+                {isLoading ? "Joining..." : "Join as Learner"}
               </Button>
             </div>
           </CardContent>
