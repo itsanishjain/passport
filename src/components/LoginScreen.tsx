@@ -3,8 +3,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { WavesIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function LoginScreen() {
   const handleInstructorJoin = () => {
@@ -36,19 +36,23 @@ export default function LoginScreen() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-3 pt-2">
-              <Button
-                onClick={handleInstructorJoin}
-                className="w-full h-12 text-base  transition-colors"
-              >
-                Join as Instructor
-              </Button>
-              <Button
-                onClick={handleLearnerJoin}
-                variant="secondary"
-                className="w-full h-12 text-base"
-              >
-                Join as Learner
-              </Button>
+              <Link href="/home">
+                <Button
+                  onClick={handleInstructorJoin}
+                  className="w-full h-12 text-base transition-colors"
+                >
+                  Join as Instructor
+                </Button>
+              </Link>
+              <Link href="/home">
+                <Button
+                  onClick={handleLearnerJoin}
+                  variant="secondary"
+                  className="w-full h-12 text-base"
+                >
+                  Join as Learner
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

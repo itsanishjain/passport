@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { MapPin, Calendar, Star, Filter, Clock } from "lucide-react";
+import Link from "next/link";
+import { MapPin, Star, Filter, Clock } from "lucide-react";
 import Image from "next/image";
 
 export default function SearchPage() {
@@ -87,9 +88,11 @@ export default function SearchPage() {
                   </div>
 
                   <div className="mt-3 flex gap-2">
-                    <Button className="flex-1" variant="outline">
-                      View Profile
-                    </Button>
+                    <Link href={`/instructor/${i}`} className="flex-1">
+                      <Button className="w-full" variant="outline">
+                        View Profile
+                      </Button>
+                    </Link>
                     <Button className="flex-1">Book Lesson</Button>
                   </div>
                 </div>
