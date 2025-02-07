@@ -3,6 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Star } from "lucide-react";
 import Image from "next/image";
+import { ReviewsTab } from "@/components/Instructor/reviews";
+import { AvailabilityTab } from "@/components/Instructor/availability";
 
 export default async function InstructorProfile({
   params,
@@ -12,9 +14,9 @@ export default async function InstructorProfile({
   const id = await Promise.resolve(params.id);
   console.log(id);
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Profile Header */}
-      <div className="bg-black px-4 pt-6 pb-6">
+    <div className="h-screen flex flex-col bg-gray-50">
+      {/* Profile Header - Fixed size */}
+      <div className="bg-black px-4 pt-6 pb-6 flex-none">
         <div className="flex items-center gap-4">
           <div className="w-20 h-20 rounded-full border-2 border-white overflow-hidden">
             <Image
@@ -40,8 +42,8 @@ export default async function InstructorProfile({
         </div>
       </div>
 
-      {/* Stats Section */}
-      <div className="px-4 py-4 bg-white border-b">
+      {/* Stats Section - Fixed size */}
+      <div className="px-4 py-4 bg-white border-b flex-none">
         <div className="grid grid-cols-3 gap-4">
           <div>
             <p className="text-sm text-gray-500">Hourly Rate</p>
@@ -59,42 +61,49 @@ export default async function InstructorProfile({
         <Button className="w-full mt-4">Book a Lesson</Button>
       </div>
 
-      {/* Tabs Section */}
-      <div className="mt-4 px-4 bg-gray-50">
-        <Tabs defaultValue="about" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-transparent">
-            <TabsTrigger value="about">About</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
-            <TabsTrigger value="schedule">Schedule</TabsTrigger>
-          </TabsList>
+      {/* Tabs Section - Takes remaining height */}
+      <div className="flex-1 flex flex-col min-h-0">
+        <Tabs defaultValue="about" className="flex-1 flex flex-col">
+          {/* Tab headers - Fixed position */}
+          <div className="bg-white border-b flex-none">
+            <TabsList className="grid w-full grid-cols-3 bg-transparent">
+              <TabsTrigger value="about">About</TabsTrigger>
+              <TabsTrigger value="reviews">Reviews</TabsTrigger>
+              <TabsTrigger value="schedule">Schedule</TabsTrigger>
+            </TabsList>
+          </div>
 
-          <TabsContent value="about" className="mt-4">
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-sm font-semibold mb-2">Qualifications</h3>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">ADI Certified</Badge>
-                  <Badge variant="secondary">Pass Plus Registered</Badge>
-                  <Badge variant="secondary">First Aid Trained</Badge>
+          {/* Tab content - Scrollable */}
+          <div className="flex-1 overflow-y-auto">
+            <TabsContent value="about" className="h-full p-4 m-0">
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-sm font-semibold mb-2">Qualifications</h3>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="secondary">ADI Certified</Badge>
+                    <Badge variant="secondary">Pass Plus Registered</Badge>
+                    <Badge variant="secondary">First Aid Trained</Badge>
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <h3 className="text-sm font-semibold mb-2">About Me</h3>
-                <p className="text-sm text-gray-600">
-                  Passionate about helping learners become confident, safe
-                  drivers. I specialize in nervous learners and offer both
-                  manual and automatic lessons. My teaching style is patient and
-                  adaptable to each student&apos;s needs.
-                </p>
-              </div>
+                <div>
+                  <h3 className="text-sm font-semibold mb-2">About Me</h3>
+                  <p className="text-sm text-gray-600">
+                    Passionate about helping learners become confident, safe
+                    drivers. I specialize in nervous learners and offer both
+                    manual and automatic lessons. My teaching style is patient
+                    and adaptable to each student&apos;s needs.
+                  </p>
+                </div>
 
-              <div>
-                <h3 className="text-sm font-semibold mb-2">Teaching Areas</h3>
-                <p className="text-sm text-gray-600">
-                  Birmingham City Centre, Solihull, Edgbaston, Moseley, Kings
-                  Heath
-                </p>
+                <div>
+                  <h3 className="text-sm font-semibold mb-2">Teaching Areas</h3>
+                  <p className="text-sm text-gray-600">
+                    Birmingham City Centre, Solihull, Edgbaston, Moseley, Kings
+                    Heath
+                  </p>
+                </div>
+
                 <div>
                   <h3 className="text-sm font-semibold mb-2">Vehicle</h3>
                   <p className="text-sm text-gray-600">
@@ -102,29 +111,17 @@ export default async function InstructorProfile({
                     regularly serviced and maintained
                   </p>
                 </div>
-
-                <div>
-                  <h3 className="text-sm font-semibold mb-2">Lesson Types</h3>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary">Manual</Badge>
-                    <Badge variant="secondary">Automatic</Badge>
-                    <Badge variant="secondary">Intensive Courses</Badge>
-                    <Badge variant="secondary">Pass Plus</Badge>
-                    <Badge variant="secondary">Refresher Lessons</Badge>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-semibold mb-2">Languages</h3>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary">English</Badge>
-                    <Badge variant="secondary">Urdu</Badge>
-                    <Badge variant="secondary">Hindi</Badge>
-                  </div>
-                </div>
               </div>
-            </div>
-          </TabsContent>
+            </TabsContent>
+
+            <TabsContent value="reviews" className="h-full p-4 m-0">
+              <ReviewsTab />
+            </TabsContent>
+
+            <TabsContent value="schedule" className="h-full p-4 m-0">
+              <AvailabilityTab />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </div>
