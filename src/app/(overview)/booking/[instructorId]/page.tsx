@@ -5,7 +5,8 @@ import { Clock } from "lucide-react";
 import Image from "next/image";
 import { PayBlock } from "@/components/Pay";
 import { SignIn } from "@/components/SignIn";
-
+import { IS_TEST } from "@/lib/constants";
+import { PayTestButton } from "@/components/PayTestButton";
 export default function BookingPage({
   params,
 }: {
@@ -16,7 +17,7 @@ export default function BookingPage({
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Instructor Summary */}
-      <SignIn />
+      {/* <SignIn /> */}
 
       <div className="bg-primary px-4 pt-6 pb-8">
         <div className="flex items-center gap-3">
@@ -108,10 +109,7 @@ export default function BookingPage({
             </div>
           </Card>
 
-          <Button className="w-full" size="lg">
-            Confirm Booking
-          </Button>
-          <PayBlock />
+          {IS_TEST ? <PayTestButton text="Confirm Booking" /> : <PayBlock />}
         </div>
       </div>
     </div>

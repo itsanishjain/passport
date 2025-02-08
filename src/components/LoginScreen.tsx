@@ -125,8 +125,8 @@ export default function LoginScreen() {
           </CardContent>
         </Card>
         {/* <SignOut /> */}
-        <SignIn />
-        <PayBlock />
+        {/* <SignIn />
+        <PayBlock /> */}
       </div>
     </div>
   );
