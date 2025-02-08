@@ -90,13 +90,16 @@ export function BookingForm({ instructor }: { instructor: Instructor }) {
       {/* Date Selection */}
       <Card className="p-4">
         <h2 className="font-semibold mb-4">Select Date & Time</h2>
-        <Calendar
-          mode="single"
-          selected={selectedDate}
-          onSelect={(date) => setValue("date", date || new Date())}
-          className="rounded-md border"
-          disabled={(date) => date < new Date()}
-        />
+        <div className="flex justify-center items-center">
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={(date) => setValue("date", date || new Date())}
+            className="rounded-md border"
+            disabled={(date) => date < new Date()}
+          />
+        </div>
+
         {errors.date && (
           <p className="text-sm text-red-500 mt-1">{errors.date.message}</p>
         )}
