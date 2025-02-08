@@ -4,11 +4,13 @@ import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { MapPin, Star, Filter, Clock } from "lucide-react";
 import Image from "next/image";
-
-export default function SearchPage() {
+import QUERIES from "@/lib/queries";
+export default async function SearchPage() {
+  const instructors = await QUERIES.getInstructors();
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Search Header */}
+
       <div className="bg-primary px-4 pt-6 pb-8">
         <div className="flex items-center gap-3 mb-4">
           <Input
@@ -50,12 +52,14 @@ export default function SearchPage() {
         </div>
 
         <div className="space-y-4">
-          {[1, 2, 3].map((_, i) => (
+          {instructors.map((instructor, i) => (
             <Card key={i} className="p-4">
               <div className="flex gap-4">
-                <div className="w-20 h-20 rounded-lg bg-gray-100 overflow-hidden">
+                <div className="w-20 h-20 rounded-full overflow-hidden">
                   <Image
-                    src={`/instructor.jpg`}
+                    src={
+                      instructor.profile_url || "/assets/avatar-placeholder.png"
+                    }
                     alt="Instructor"
                     width={80}
                     height={80}
@@ -65,9 +69,11 @@ export default function SearchPage() {
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-semibold">Sarah Wilson</h3>
+                      <h3 className="font-semibold">{instructor.name}</h3>
                       <p className="text-sm text-gray-500">
-                        ADI Certified • 8 years exp.
+                        {instructor.instructorProfile?.bio} •{" "}
+                        {instructor.instructorProfile?.experience_years} years
+                        exp.
                       </p>
                     </div>
                     <div className="flex items-center">

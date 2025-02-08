@@ -12,6 +12,13 @@ const QUERIES = {
       where: eq(users.id, userId),
     });
   },
+  getInstructors: async () => {
+    return await db.query.users.findMany({
+      with: {
+        instructorProfile: true,
+      },
+    });
+  },
 };
 
 export default QUERIES;
