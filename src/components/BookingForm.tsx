@@ -83,8 +83,9 @@ export function BookingForm({ instructor }: { instructor: Instructor }) {
   };
 
   const totalAmount =
-    ((instructor.instructorProfile?.hourly_rate || 0) + PLATFORM_FEE) *
-    parseFloat(duration || "1");
+    (instructor.instructorProfile?.hourly_rate || 0) *
+      parseFloat(duration || "1") +
+    PLATFORM_FEE;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
