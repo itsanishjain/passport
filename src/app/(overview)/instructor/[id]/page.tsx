@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Star } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { ReviewsTab } from "@/components/Instructor/reviews";
 import { AvailabilityTab } from "@/components/Instructor/availability";
 
@@ -58,7 +59,9 @@ export default async function InstructorProfile({
             <p className="font-semibold">92%</p>
           </div>
         </div>
-        <Button className="w-full mt-4">Book a Lesson</Button>
+        <Link href={`/booking/${id}`}>
+          <Button className="w-full mt-4">Book a Lesson</Button>
+        </Link>
       </div>
 
       {/* Tabs Section - Takes remaining height */}

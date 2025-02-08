@@ -39,7 +39,9 @@ export default function BookingPage({
           {/* Date Selection */}
           <Card className="p-4">
             <h2 className="font-semibold mb-4">Select Date & Time</h2>
-            <Calendar mode="single" className="rounded-md border" />
+            <div className="flex justify-center items-center">
+              <Calendar mode="single" className="rounded-md border" />
+            </div>
           </Card>
 
           {/* Time Slots */}

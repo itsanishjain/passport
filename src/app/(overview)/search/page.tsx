@@ -5,6 +5,7 @@ import Link from "next/link";
 import { MapPin, Star, Filter, Clock } from "lucide-react";
 import Image from "next/image";
 import QUERIES from "@/lib/queries";
+
 export default async function SearchPage() {
   const instructors = await QUERIES.getInstructors();
   return (
