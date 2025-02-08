@@ -14,6 +14,7 @@ const QUERIES = {
   },
   getInstructors: async () => {
     return await db.query.users.findMany({
+      where: eq(users.role, "instructor"),
       with: {
         instructorProfile: true,
       },

@@ -46,7 +46,9 @@ export default async function SearchPage() {
       {/* Search Results */}
       <div className="px-4 py-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">12 Instructors Available</h2>
+          <h2 className="text-lg font-semibold">
+            {instructors.length} Instructors Available
+          </h2>
           <Button variant="ghost" size="sm">
             Sort by: Rating
           </Button>
