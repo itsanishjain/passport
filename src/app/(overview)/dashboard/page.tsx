@@ -60,12 +60,11 @@ export default async function StudentDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
-
       <div className="bg-primary px-4 pt-6 pb-8">
         <div className="flex items-center justify-between">
           <div className="text-white">
             <h1 className="text-xl font-semibold">
-              Welcome back, {bookings[0].learner?.name}
+              Welcome back, {bookings[0]?.learner?.name || "Student"}
             </h1>
             <p className="text-sm opacity-90">
               Your learning journey continues
@@ -102,41 +101,59 @@ export default async function StudentDashboard() {
       {/* Main Content */}
       <div className="px-4 -mt-4">
         {/* Upcoming Lesson */}
-        <Card className="p-4 mb-6">
-          <h2 className="font-semibold mb-4">Next Lesson</h2>
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full overflow-hidden">
-              <Image
-                src={
-                  bookings[0].instructor?.profile_url ??
-                  "/assets/avatar-women-placeholder.png"
-                }
-                alt="Sarah Wilson"
-                width={64}
-                height={64}
-                className="object-cover"
-              />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold">{bookings[0].instructor?.name}</h3>
-              <div className="flex items-center text-sm text-gray-500 mt-1">
-                <Calendar className="w-4 h-4 mr-1" />
-                <span>
-                  {format(new Date(bookings[0].start_time), "MMM dd, hh:mm a")}
-                </span>
+        {bookings.length > 0 ? (
+          <Card className="p-4 mb-6">
+            <h2 className="font-semibold mb-4">Next Lesson</h2>
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-full overflow-hidden">
+                <Image
+                  src={
+                    bookings[0].instructor?.profile_url ??
+                    "/assets/avatar-placeholder.png"
+                  }
+                  alt={bookings[0].instructor?.name || "Instructor"}
+                  width={64}
+                  height={64}
+                  className="object-cover"
+                />
               </div>
-              <div className="flex items-center text-sm text-gray-500 mt-1">
-                <MapPin className="w-4 h-4 mr-1" />
-
-                <span>Pickup: {bookings[0].location}</span>
+              <div className="flex-1">
+                <h3 className="font-semibold">
+                  {bookings[0].instructor?.name || "Instructor"}
+                </h3>
+                <div className="flex items-center text-sm text-gray-500 mt-1">
+                  <Calendar className="w-4 h-4 mr-1" />
+                  <span>
+                    {format(
+                      new Date(bookings[0].start_time),
+                      "MMM dd, hh:mm a"
+                    )}
+                  </span>
+                </div>
+                <div className="flex items-center text-sm text-gray-500 mt-1">
+                  <MapPin className="w-4 h-4 mr-1" />
+                  <span>Pickup: {bookings[0].location}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="grid grid-cols-2 gap-2 mt-4">
-            <Button variant="outline">Reschedule</Button>
-            <Button>Get Ready</Button>
-          </div>
-        </Card>
+            <div className="grid grid-cols-2 gap-2 mt-4">
+              <Button variant="outline">Reschedule</Button>
+              <Button>Get Ready</Button>
+            </div>
+          </Card>
+        ) : (
+          <Card className="p-4 mb-6">
+            <div className="text-center py-6">
+              <h2 className="font-semibold mb-2">No Upcoming Lessons</h2>
+              <p className="text-sm text-gray-500 mb-4">
+                Book your first driving lesson to start your journey
+              </p>
+              <Button asChild>
+                <a href="/instructors">Find an Instructor</a>
+              </Button>
+            </div>
+          </Card>
+        )}
 
         <div className="mb-6">
           <MyBookings bookings={bookings} />
