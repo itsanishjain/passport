@@ -8,6 +8,7 @@ import { db } from "@/lib/db";
 import { bookings } from "@/drizzle/schema";
 import { sql } from "drizzle-orm";
 import { format, subDays } from "date-fns";
+import { MyBookings } from "@/components/dashboard/MyBookings";
 
 async function getLearningStats() {
   // Get bookings for the last 14 days
@@ -129,6 +130,10 @@ export default async function StudentDashboard() {
             <Button>Get Ready</Button>
           </div>
         </Card>
+
+        <div className="mb-6">
+          <MyBookings bookings={bookings} />
+        </div>
 
         <div className="grid gap-4">
           <BookingStats learningHours={learningHours} />
