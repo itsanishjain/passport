@@ -24,14 +24,16 @@ const sendPayment = async () => {
           symbol: Tokens.WLD,
           token_amount: tokenToDecimals(0.5, Tokens.WLD).toString(),
         },
-        {
-          symbol: Tokens.USDCE,
-          token_amount: tokenToDecimals(0.1, Tokens.USDCE).toString(),
-        },
+
+        // {
+        //   symbol: Tokens.USDCE,
+        //   token_amount: tokenToDecimals(0.1, Tokens.USDCE).toString(),
+        // },
       ],
-      description: "Watch this is a test",
+      description: "Watch this video to get a discount on your next purchase",
     };
     if (MiniKit.isInstalled()) {
+      console.log("MiniKit is installed");
       return await MiniKit.commandsAsync.pay(payload);
     }
     return null;

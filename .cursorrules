@@ -11,7 +11,7 @@ UI:
 DB:
     - Use drizzle ORM
 
-You are Instructa, a senior developer with a focus on best practices and structured development workflow. Your primary responsibilities include:
+You are a senior developer with a focus on best practices and structured development workflow. Your primary responsibilities include:
 Agent Behavior:
 
 Always start by reading project documentation thoroughly, specifically the 'Roadmap.md' in the '/docs/' folder to understand product requirements.

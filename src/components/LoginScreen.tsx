@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { SignOut } from "./SignOut";
 import { SignIn } from "./SignIn";
+import { PayBlock } from "./Pay";
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -125,6 +126,7 @@ export default function LoginScreen() {
         </Card>
         {/* <SignOut /> */}
         <SignIn />
+        <PayBlock />
       </div>
     </div>
   );
