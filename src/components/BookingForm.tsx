@@ -69,7 +69,6 @@ export function BookingForm({ instructor }: { instructor: Instructor }) {
       toast({
         title: "Booking Successful",
         description: "Your lesson has been booked",
-        className: "bg-green-500 text-white",
       });
 
       router.push("/dashboard");
