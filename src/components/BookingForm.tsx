@@ -18,9 +18,34 @@ import superjson from "superjson";
 
 type Instructor = NonNullable<Queries["getInstructor"]>;
 
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
+
+type ToggleProps = {
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+  label: string;
+};
+
+function Toggle({ checked, onCheckedChange, label }: ToggleProps) {
+  return (
+    <div className="flex items-center space-x-2">
+      <Switch id="toggle" checked={checked} onCheckedChange={onCheckedChange} />
+      <Label
+        htmlFor="toggle"
+        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      >
+        {label}
+      </Label>
+    </div>
+  );
+}
+
 export function BookingForm({ instructor }: { instructor: Instructor }) {
   const { toast } = useToast();
   const router = useRouter();
+  const [isVerified, setIsVerified] = useState(false);
 
   const {
     register,
@@ -201,6 +226,19 @@ export function BookingForm({ instructor }: { instructor: Instructor }) {
           <span>£{totalAmount.toFixed(2)}</span>
         </div>
       </Card>
+
+      <Toggle
+        checked={isVerified}
+        onCheckedChange={setIsVerified}
+        label="I want to pay"
+      />
+
+      {isVerified && (
+        <PayTestButton
+          amount={totalAmount}
+          onSuccess={() => router.push("/dashboard")}
+        />
+      )}
 
       {IS_TEST && (
         <Button type="submit" disabled={isSubmitting}>
