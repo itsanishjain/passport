@@ -28,13 +28,14 @@ const QUERIES = {
       },
     });
   },
-  getBookings: async () => {
+  getBookings: async (learnerId: string) => {
     return await db.query.bookings.findMany({
       orderBy: asc(bookings.start_time),
       with: {
         instructor: true,
         learner: true,
       },
+      where: eq(bookings.learner_id, learnerId),
     });
   },
 };

@@ -9,6 +9,9 @@ import { bookings } from "@/drizzle/schema";
 import { sql } from "drizzle-orm";
 import { format, subDays } from "date-fns";
 import { MyBookings } from "@/components/dashboard/MyBookings";
+import { headers } from "next/headers";
+import { getCookieFromHeader } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 async function getLearningStats() {
   // Get bookings for the last 14 days
@@ -44,7 +47,11 @@ async function getLearningStats() {
 }
 
 export default async function StudentDashboard() {
-  const bookings = await QUERIES.getBookings();
+  const userId = getCookieFromHeader("user_id", headers().get("cookie"));
+  if (!userId) {
+    redirect("/login");
+  }
+  const bookings = await QUERIES.getBookings(userId);
   const learningHours = await getLearningStats();
 
   // Calculate total hours

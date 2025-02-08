@@ -1,5 +1,6 @@
 export const VERIFICATION_ACTIONS = {
-  DRIVER: "driver",
+  DRIVER: "passport_action",
+  PASSPORT: "passport_action",
 };
 
 export const IS_TEST = true;
