@@ -83,7 +83,8 @@ export function BookingForm({ instructor }: { instructor: Instructor }) {
   };
 
   const totalAmount =
-    (instructor.instructorProfile?.hourly_rate || 0) + PLATFORM_FEE;
+    ((instructor.instructorProfile?.hourly_rate || 0) + PLATFORM_FEE) *
+    parseFloat(duration || "1");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -183,7 +184,12 @@ export function BookingForm({ instructor }: { instructor: Instructor }) {
           <span className="text-gray-600">
             Lesson ({duration} hour{duration !== "1" ? "s" : ""})
           </span>
-          <span>£{instructor.instructorProfile?.hourly_rate}.00</span>
+          <span>
+            £
+            {(instructor.instructorProfile?.hourly_rate ?? 0) *
+              parseFloat(duration)}
+            .00
+          </span>
         </div>
         <div className="flex justify-between mb-4">
           <span className="text-gray-600">Booking fee</span>
