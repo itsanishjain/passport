@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ReviewsTab } from "@/components/Instructor/reviews";
 import { AvailabilityTab } from "@/components/Instructor/availability";
+import QUERIES from "@/lib/queries";
+import { VerificationIcon } from "@/components/VerificationIcon";
 
 export default async function InstructorProfile({
   params,
@@ -14,9 +16,17 @@ export default async function InstructorProfile({
 }) {
   const id = await Promise.resolve(params.id);
   console.log(id);
+  const instructor = await QUERIES.getInstructor(id);
+  console.log(instructor);
+
+  if (!instructor) {
+    return <div>Instructor not found</div>;
+  }
+
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Profile Header - Fixed size */}
+
       <div className="bg-black px-4 pt-6 pb-6 flex-none">
         <div className="flex items-center gap-4">
           <div className="w-20 h-20 rounded-full border-2 border-white overflow-hidden">
@@ -29,7 +39,7 @@ export default async function InstructorProfile({
             />
           </div>
           <div className="text-white">
-            <h1 className="text-xl font-semibold">Sarah Wilson</h1>
+            <h1 className="text-xl font-semibold">{instructor?.name}</h1>
             <p className="text-sm text-gray-300">
               Professional Driving Instructor
             </p>
@@ -39,6 +49,7 @@ export default async function InstructorProfile({
               <span className="text-gray-400">•</span>
               <span>423 lessons</span>
             </div>
+            <VerificationIcon type="orb" />
           </div>
         </div>
       </div>
@@ -48,7 +59,9 @@ export default async function InstructorProfile({
         <div className="grid grid-cols-3 gap-4">
           <div>
             <p className="text-sm text-gray-500">Hourly Rate</p>
-            <p className="font-semibold">£35/hour</p>
+            <p className="font-semibold">
+              £{instructor?.instructorProfile?.hourly_rate}/hour
+            </p>
           </div>
           <div>
             <p className="text-sm text-gray-500">Experience</p>

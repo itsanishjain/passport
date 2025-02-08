@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { users, bookings } from "@/drizzle/schema";
-import { eq, desc, asc } from "drizzle-orm";
+import { eq, asc } from "drizzle-orm";
 
 const QUERIES = {
   user: async (userId: string, userType: string) => {
