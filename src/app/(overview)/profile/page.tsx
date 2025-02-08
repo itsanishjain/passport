@@ -1,6 +1,6 @@
 import InstructorProfile from "@/components/profile/InstructorProfile";
 import LearnerProfile from "@/components/profile/LearnerProfile";
-import { getCookieFromHeader, getWorldToken } from "@/lib/auth";
+import { getCookieFromHeader } from "@/lib/auth";
 import { headers } from "next/headers";
 import QUERIES from "@/lib/queries";
 import { redirect } from "next/navigation";

@@ -53,7 +53,7 @@ const handlePay = async () => {
   }
 
   if (response.status == "success") {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/confirm-payment`, {
+    const res = await fetch(`${process.env.VERCEL_URL}/api/confirm-payment`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ payload: response }),
