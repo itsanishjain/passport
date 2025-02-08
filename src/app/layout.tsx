@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import NextAuthProvider from "@/components/next-auth-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
+import Progress from "@/components/ProgressBar";
 
 export const metadata: Metadata = {
   title: "Passport - Driving Instructor App",
@@ -34,6 +35,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
+              <Progress />
               <MiniKitProvider>{children}</MiniKitProvider>
               <Toaster />
             </ThemeProvider>

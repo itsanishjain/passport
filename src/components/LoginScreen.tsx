@@ -10,6 +10,7 @@ import { UserCreate } from "@/lib/types/user-api";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { SignOut } from "./SignOut";
+import { SignIn } from "./SignIn";
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -123,6 +124,7 @@ export default function LoginScreen() {
           </CardContent>
         </Card>
         {/* <SignOut /> */}
+        <SignIn />
       </div>
     </div>
   );
