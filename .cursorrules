@@ -55,6 +55,20 @@ export async function POST(request: NextRequest) {
     const webhook = WebhookNotificationSchema.parse(body);
 }
 
+
+Types and Schema Definitions:
+- Always define types in the `/lib/types` directory using Zod schemas
+- Use `z.infer<typeof SchemaName>` to derive TypeScript types from Zod schemas
+- Never define inline types or interfaces in component files
+- Follow this pattern for type definitions:
+  1. Create a Zod schema in `/lib/types/{feature}-api.ts`
+  2. Export the schema and its inferred type
+  3. Import and use the type where needed
+  4. Use the schema for runtime validation in API routes
+
+Example:
+type User = Queries["user"]; <--- this comes from the queries itself
+
 ```
 
 Code Development Standards:
