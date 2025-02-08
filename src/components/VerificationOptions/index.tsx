@@ -50,6 +50,8 @@ export function VerificationOptions() {
 
         const obj = await MiniKit.commandsAsync.verify(verifyPayload);
 
+        console.log({ obj });
+
         if (obj.finalPayload.status === "error") {
           throw new Error("Verification failed");
         }
@@ -66,6 +68,12 @@ export function VerificationOptions() {
             signal: verifyPayload.signal,
           }),
         });
+
+        console.log({ verifyResponse });
+
+        const data = await verifyResponse.json();
+
+        console.log({ data });
 
         if (!verifyResponse.ok) {
           throw new Error("Server verification failed");
