@@ -94,12 +94,15 @@ export default async function SearchPage() {
                   </div>
 
                   <div className="mt-3 flex gap-2">
-                    <Link href={`/instructor/${i}`} className="flex-1">
+                    <Link
+                      href={`/instructor/${instructor.id}`}
+                      className="flex-1"
+                    >
                       <Button className="w-full" variant="outline">
                         View Profile
                       </Button>
                     </Link>
-                    <Link href={`/booking/${i}`} className="flex-1">
+                    <Link href={`/booking/${instructor.id}`} className="flex-1">
                       <Button className="flex-1">Book Lesson</Button>
                     </Link>
                   </div>
