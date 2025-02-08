@@ -28,18 +28,18 @@ export default function RootLayout({
     <html lang="en">
       <body className={bricolage.className}>
         <NextAuthProvider>
-          <ErudaProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Progress />
-              <MiniKitProvider>{children}</MiniKitProvider>
-              <Toaster />
-            </ThemeProvider>
-          </ErudaProvider>
+          {/* <ErudaProvider> */}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Progress />
+            <MiniKitProvider>{children}</MiniKitProvider>
+            <Toaster />
+          </ThemeProvider>
+          {/* </ErudaProvider> */}
         </NextAuthProvider>
       </body>
     </html>
