@@ -26,6 +26,7 @@ export function PayTestButton({
       title: "Payment Successful",
       description: `Successfully paid £${amount}`,
       variant: "default",
+      className: "bg-green-500 text-white",
     });
 
     setIsLoading(false);

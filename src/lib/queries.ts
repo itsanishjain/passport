@@ -19,6 +19,14 @@ const QUERIES = {
       },
     });
   },
+  getInstructor: async (instructorId: string) => {
+    return await db.query.users.findFirst({
+      where: eq(users.id, instructorId),
+      with: {
+        instructorProfile: true,
+      },
+    });
+  },
 };
 
 export default QUERIES;

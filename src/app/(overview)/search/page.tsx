@@ -72,11 +72,10 @@ export default async function SearchPage() {
                     <div>
                       <h3 className="font-semibold">{instructor.name}</h3>
                       <p className="text-sm text-gray-500">
-                        {instructor.instructorProfile?.bio} •{" "}
-                        {instructor.instructorProfile?.experience_years} years
-                        exp.
+                        {instructor.instructorProfile?.bio}
                       </p>
                     </div>
+
                     <div className="flex items-center">
                       <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                       <span className="ml-1 font-medium">4.9</span>
@@ -90,7 +89,10 @@ export default async function SearchPage() {
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <Clock className="w-4 h-4 mr-1" />
-                      <span>£35/hour • Manual & Automatic</span>
+                      <span>
+                        £{instructor.instructorProfile?.hourly_rate}/hour •{" "}
+                        {instructor.instructorProfile?.vehicle_type}
+                      </span>
                     </div>
                   </div>
 

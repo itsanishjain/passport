@@ -4,20 +4,25 @@ import { Calendar } from "@/components/ui/calendar";
 import { Clock } from "lucide-react";
 import Image from "next/image";
 import { PayBlock } from "@/components/Pay";
-import { SignIn } from "@/components/SignIn";
-import { IS_TEST } from "@/lib/constants";
+import { IS_TEST, PLATFORM_FEE } from "@/lib/constants";
 import { PayTestButton } from "@/components/PayTestButton";
-export default function BookingPage({
+import QUERIES from "@/lib/queries";
+
+export default async function BookingPage({
   params,
 }: {
   params: { instructorId: string };
 }) {
   const instructorId = params.instructorId;
-  console.log(instructorId);
+  const instructor = await QUERIES.getInstructor(instructorId);
+
+  if (!instructor) {
+    return <div>Instructor not found</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Instructor Summary */}
-      {/* <SignIn /> */}
 
       <div className="bg-primary px-4 pt-6 pb-8">
         <div className="flex items-center gap-3">
@@ -31,8 +36,13 @@ export default function BookingPage({
             />
           </div>
           <div className="text-white">
-            <h1 className="font-semibold">Book Lesson with Sarah</h1>
-            <p className="text-sm opacity-90">£35/hour • Manual</p>
+            <h1 className="font-semibold">
+              Book Lesson with {instructor.name}
+            </h1>
+            <p className="text-sm opacity-90">
+              £{instructor.instructorProfile?.hourly_rate}/hour •{" "}
+              {instructor.instructorProfile?.vehicle_type}
+            </p>
           </div>
         </div>
       </div>
@@ -97,7 +107,7 @@ export default function BookingPage({
           <Card className="p-4">
             <div className="flex justify-between mb-2">
               <span className="text-gray-600">Lesson (1 hour)</span>
-              <span>£35.00</span>
+              <span>£{instructor.instructorProfile?.hourly_rate}.00</span>
             </div>
             <div className="flex justify-between mb-4">
               <span className="text-gray-600">Booking fee</span>
@@ -105,11 +115,27 @@ export default function BookingPage({
             </div>
             <div className="flex justify-between font-semibold">
               <span>Total</span>
-              <span>£37.00</span>
+              <span>
+                £
+                {(
+                  (instructor.instructorProfile?.hourly_rate as number) +
+                  PLATFORM_FEE
+                ).toFixed(2)}
+              </span>
             </div>
           </Card>
 
-          {IS_TEST ? <PayTestButton text="Confirm Booking" /> : <PayBlock />}
+          {IS_TEST ? (
+            <PayTestButton
+              text="Confirm Booking"
+              amount={
+                (instructor.instructorProfile?.hourly_rate as number) +
+                PLATFORM_FEE
+              }
+            />
+          ) : (
+            <PayBlock />
+          )}
         </div>
       </div>
     </div>

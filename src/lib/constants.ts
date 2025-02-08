@@ -3,3 +3,4 @@ export const VERIFICATION_ACTIONS = {
 };
 
 export const IS_TEST = true;
+export const PLATFORM_FEE = 2;
