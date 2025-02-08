@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { users } from "@/drizzle/schema";
-import { eq } from "drizzle-orm";
+import { users, bookings } from "@/drizzle/schema";
+import { eq, desc } from "drizzle-orm";
 
 const QUERIES = {
   user: async (userId: string, userType: string) => {
@@ -25,6 +25,15 @@ const QUERIES = {
       where: eq(users.id, instructorId),
       with: {
         instructorProfile: true,
+      },
+    });
+  },
+  getBookings: async () => {
+    return await db.query.bookings.findMany({
+      orderBy: desc(bookings.start_time),
+      with: {
+        instructor: true,
+        learner: true,
       },
     });
   },

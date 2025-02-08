@@ -2,11 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, MapPin, GraduationCap, Book, Star } from "lucide-react";
 import Image from "next/image";
+import QUERIES from "@/lib/queries";
 
-export default function StudentDashboard() {
+export default async function StudentDashboard() {
+  const bookings = await QUERIES.getBookings();
+  console.log("bookings:", bookings);
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
+
       <div className="bg-primary px-4 pt-6 pb-8">
         <div className="flex items-center justify-between">
           <div className="text-white">
@@ -49,7 +54,10 @@ export default function StudentDashboard() {
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full overflow-hidden">
               <Image
-                src="/assets/avatar-women-placeholder.png"
+                src={
+                  bookings[0].instructor?.profile_url ??
+                  "/assets/avatar-women-placeholder.png"
+                }
                 alt="Sarah Wilson"
                 width={64}
                 height={64}
@@ -57,7 +65,7 @@ export default function StudentDashboard() {
               />
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold">Sarah Wilson</h3>
+              <h3 className="font-semibold">{bookings[0].instructor?.name}</h3>
               <div className="flex items-center text-sm text-gray-500 mt-1">
                 <Calendar className="w-4 h-4 mr-1" />
                 <span>Tomorrow, 10:00 AM</span>
