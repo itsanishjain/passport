@@ -20,3 +20,4 @@ This is a hackathon build, but the plan is real. If we get this right, learner d
 
 Let’s make it happen.
 
+Try the app: [PassPort Mini App](https://worldcoin.org/mini-app?app_id=app_85369f76cdc28ce53abef199a589cac4&draft_id=meta_62f58dac9e31ade78772ab79f0281130)
