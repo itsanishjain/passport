@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { MapPin, Calendar, Star, Search } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -95,10 +96,20 @@ export default function Home() {
               </div>
             </div>
             <div className="mt-4 grid grid-cols-2 gap-2">
-              <Button variant="outline">View Profile</Button>
-              <Button className="bg-primary hover:bg-primary/90">
-                Book Now
-              </Button>
+              <Link
+                href="/instructor/1b251a64-2338-4f66-a953-9b393fbb80ae"
+                className="w-full"
+              >
+                <Button variant="outline" className="w-full">
+                  View Profile
+                </Button>
+              </Link>
+              <Link
+                href="/booking/1b251a64-2338-4f66-a953-9b393fbb80ae"
+                className="w-full"
+              >
+                <Button className="w-full">Book Now</Button>
+              </Link>
             </div>
           </Card>
         </div>
