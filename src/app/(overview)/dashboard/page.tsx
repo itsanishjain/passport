@@ -135,7 +135,7 @@ export default async function StudentDashboard() {
           <MyBookings bookings={bookings} />
         </div>
 
-        <div className="grid gap-4">
+        <div className="mb-6">
           <BookingStats learningHours={learningHours} />
         </div>
 
