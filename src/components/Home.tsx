@@ -97,7 +97,7 @@ export default function Home() {
             </div>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <Link
-                href="/instructor/1b251a64-2338-4f66-a953-9b393fbb80ae"
+                href="/instructor/b270cfe5-9f3d-43e7-918f-e49f7277a965"
                 className="w-full"
               >
                 <Button variant="outline" className="w-full">
@@ -105,7 +105,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link
-                href="/booking/1b251a64-2338-4f66-a953-9b393fbb80ae"
+                href="/booking/b270cfe5-9f3d-43e7-918f-e49f7277a965"
                 className="w-full"
               >
                 <Button className="w-full">Book Now</Button>
