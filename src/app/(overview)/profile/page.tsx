@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import QUERIES from "@/lib/queries";
 import { redirect } from "next/navigation";
 import { VerificationOptions } from "@/components/VerificationOptions";
+import { SignOut } from "@/components/SignOut";
 
 export default async function ProfilePage() {
   const userType = getCookieFromHeader("user_type", headers().get("cookie"));
@@ -42,6 +43,10 @@ export default async function ProfilePage() {
         </p>
       </div>
       <VerificationOptions />
+
+      <div className="mt-8">
+        <SignOut />
+      </div>
     </div>
   );
 }

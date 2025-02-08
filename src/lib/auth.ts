@@ -17,3 +17,17 @@ export function getCookieFromHeader(
 
   return cookie ? decodeURIComponent(cookie) : null;
 }
+
+export function deleteCookies() {
+  // List of cookies to delete
+  const cookies = [
+    "user_type",
+    "user_id",
+    "wallet_address",
+    // Add any other cookies that need to be deleted
+  ];
+
+  cookies.forEach((cookieName) => {
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+  });
+}

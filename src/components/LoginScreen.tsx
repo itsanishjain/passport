@@ -9,6 +9,7 @@ import { setCookie, getCookie } from "@/lib/cookies";
 import { UserCreate } from "@/lib/types/user-api";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { SignOut } from "./SignOut";
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -121,6 +122,7 @@ export default function LoginScreen() {
             </div>
           </CardContent>
         </Card>
+        {/* <SignOut /> */}
       </div>
     </div>
   );
