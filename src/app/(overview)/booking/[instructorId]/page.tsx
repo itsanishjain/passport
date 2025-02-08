@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Clock } from "lucide-react";
 import Image from "next/image";
+import { PayBlock } from "@/components/Pay";
 
 export default function BookingPage({
   params,
@@ -19,7 +20,7 @@ export default function BookingPage({
         <div className="flex items-center gap-3">
           <div className="w-16 h-16 rounded-full overflow-hidden">
             <Image
-              src="/assets/avatar-placeholder-women.png"
+              src="/assets/avatar-women-placeholder.png"
               alt="Sarah Wilson"
               width={64}
               height={64}
@@ -108,6 +109,7 @@ export default function BookingPage({
           <Button className="w-full" size="lg">
             Confirm Booking
           </Button>
+          <PayBlock />
         </div>
       </div>
     </div>

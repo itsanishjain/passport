@@ -21,7 +21,7 @@ export default async function InstructorProfile({
         <div className="flex items-center gap-4">
           <div className="w-20 h-20 rounded-full border-2 border-white overflow-hidden">
             <Image
-              src="/assets/avatar-placeholder-women.png"
+              src="/assets/avatar-women-placeholder.png"
               alt="Sarah Wilson"
               width={80}
               height={80}
