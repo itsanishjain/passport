@@ -21,13 +21,13 @@
 // };
 
 "use client";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export const SignIn = () => {
-  // const { status } = useSession();
-  // const router = useRouter();
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   const handleSignIn = () => {
     signIn("worldcoin", {
@@ -36,11 +36,20 @@ export const SignIn = () => {
     });
   };
 
-  // if (status === "loading") {
-  //   return <div>Loading...</div>;
-  // }
+  if (session) {
+    return (
+      <>
+        Signed in as {session?.user?.name?.slice(0, 10)} <br />
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
+    );
+  }
 
-  // if (status === "authenticated") {
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  // if (status === "unauthenticated") {
   //   router.push("/home");
   // }
 

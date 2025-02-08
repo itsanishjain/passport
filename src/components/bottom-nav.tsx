@@ -1,11 +1,11 @@
 "use client";
 
 import { Home, Calendar, User, Search } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function BottomNav() {
   const pathname = usePathname();
-  const router = useRouter();
 
   const navigation = [
     { name: "Home", href: "/home", icon: Home },
@@ -18,9 +18,9 @@ export function BottomNav() {
     <div className="fixed bottom-0 left-0 z-50 w-full h-16 bg-background border-t">
       <div className="grid h-full max-w-lg grid-cols-4 mx-auto">
         {navigation.map((item) => (
-          <button
+          <Link
             key={item.name}
-            onClick={() => router.push(item.href)}
+            href={item.href}
             className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group ${
               pathname === item.href
                 ? "text-primary"
@@ -29,7 +29,7 @@ export function BottomNav() {
           >
             <item.icon className="w-6 h-6" />
             <span className="text-xs">{item.name}</span>
-          </button>
+          </Link>
         ))}
       </div>
     </div>
