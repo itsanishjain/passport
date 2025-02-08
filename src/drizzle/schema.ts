@@ -84,6 +84,16 @@ export const usersRelations = relations(users, ({ one }) => ({
   }),
 }));
 
+export const instructorProfilesRelations = relations(
+  instructorProfiles,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [instructorProfiles.user_id],
+      references: [users.id],
+    }),
+  })
+);
+
 export const bookingsRelations = relations(bookings, ({ one }) => ({
   instructor: one(users, {
     fields: [bookings.instructor_id],
